@@ -46,10 +46,13 @@ public class JavaNetworkWordWindowedCount {
                 ).toDF("word", "timestamp");
 
         // Group the data by window and word and compute the count of each group
-        Dataset<Row> windowedCounts = words.groupBy(
+        Dataset<Row> windowedCounts = words
+                .withWatermark("timestamp", windowDuration)
+                .groupBy(
                 functions.window(words.col("timestamp"), windowDuration, slideDuration),
                 words.col("word")
         ).count().orderBy("window");
+        //  functions.window(words.col("timestamp"), windowDuration, slideDuration),
 
         // Start running the query that prints the windowed word counts to the console
         StreamingQuery query = windowedCounts.writeStream()
