@@ -60,7 +60,7 @@ public class JavaNetworkWordWindowedCount {
                 .format("console")
                 .option("truncate", "false")
                 .start();
-
+        
         query.awaitTermination();
     }
 }
